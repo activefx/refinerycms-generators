@@ -1,10 +1,11 @@
-require 'rails/generators/migration'
+#require 'rails/generators/migration'
+require 'rails/generators'
 require 'yaml'
 require 'pathname'
 
 class RefineryEngineGenerator < Rails::Generators::NamedBase
 
-  include Rails::Generators::Migration
+  #include Rails::Generators::Migration
 
   source_root Pathname.new(File.expand_path('../templates', __FILE__))
   argument :attributes, :type => :array, :default => [], :banner => "field:type field:type"
@@ -77,7 +78,7 @@ class RefineryEngineGenerator < Rails::Generators::NamedBase
           else
             puts "rails generate refinerycms_#{engine} #{plural_name}"
           end
-          puts "rake db:migrate"
+          #puts "rake db:migrate"
           puts "------------------------"
         end
       elsif self.behavior == :revoke
@@ -86,24 +87,24 @@ class RefineryEngineGenerator < Rails::Generators::NamedBase
           l =~ %r{refinerycms-#{plural_name}}
         }.join("\n"))
 
-        migration_files = Dir.glob(File.expand_path('../templates/db/migrate/*.rb', __FILE__)).sort.collect{|m|
-          m.gsub('plural_name', plural_name).gsub('singular_name', singular_name).split(File::SEPARATOR).last.split('_')[1..-1].join('_')
-        }
-        if (migration_paths = Dir[Rails.root.join('db', 'migrate', "*#{migration_files.join(',')}")]).any?
-          puts ""
-          puts "I found #{'a ' unless migration_paths.many?}migration#{'s' if migration_paths.many?} at:"
-          puts migration_paths.join("\n")
-          puts ""
-          puts "Please ensure that you roll back these migrations if you used them (using rake db:rollback) and then run:"
-          puts "------------------------"
-          puts "rm #{migration_paths.join("\n rm ")}"
-          puts "rm #{Rails.root.join('db', 'seeds', "#{plural_name}.rb")}"
-          puts "------------------------"
-          puts "This will ensure that nothing gets left behind from this engine in your database."
-          puts "Note - be careful about rolling back if you have any migrations created after this one."
-          puts "This is because Rails rolls back only the last migration used each time you invoke rake db:rollback"
-          puts ""
-        end
+#        migration_files = Dir.glob(File.expand_path('../templates/db/migrate/*.rb', __FILE__)).sort.collect{|m|
+#          m.gsub('plural_name', plural_name).gsub('singular_name', singular_name).split(File::SEPARATOR).last.split('_')[1..-1].join('_')
+#        }
+#        if (migration_paths = Dir[Rails.root.join('db', 'migrate', "*#{migration_files.join(',')}")]).any?
+#          puts ""
+#          puts "I found #{'a ' unless migration_paths.many?}migration#{'s' if migration_paths.many?} at:"
+#          puts migration_paths.join("\n")
+#          puts ""
+#          puts "Please ensure that you roll back these migrations if you used them (using rake db:rollback) and then run:"
+#          puts "------------------------"
+#          puts "rm #{migration_paths.join("\n rm ")}"
+#          puts "rm #{Rails.root.join('db', 'seeds', "#{plural_name}.rb")}"
+#          puts "------------------------"
+#          puts "This will ensure that nothing gets left behind from this engine in your database."
+#          puts "Note - be careful about rolling back if you have any migrations created after this one."
+#          puts "This is because Rails rolls back only the last migration used each time you invoke rake db:rollback"
+#          puts ""
+#        end
       end
     else
       puts "You must specify at least one field. For help: rails generate refinery_engine"
@@ -138,3 +139,4 @@ protected
   end
 
 end
+

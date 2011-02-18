@@ -1,6 +1,9 @@
-class <%= class_name %> < ActiveRecord::Base
+class <%= class_name %>
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  include Mongoid::Search
 
-  acts_as_indexed :fields => [:<%= attributes.collect{ |attribute| attribute.name if attribute.type.to_s =~ /string|text/ }.compact.uniq.join(", :") %>]
+  search_in => [:<%= attributes.collect{ |attribute| attribute.name if attribute.type.to_s =~ /string|text/ }.compact.uniq.join(", :") %>]
   <% if (title = attributes.detect { |a| a.type.to_s == "string" }).present? %>
   validates :<%= title.name %>, :presence => true, :uniqueness => true
   <% else %>
@@ -12,10 +15,11 @@ class <%= class_name %> < ActiveRecord::Base
   <% end -%>
 <% attributes.collect{|a| a if a.type.to_s == 'image'}.compact.uniq.each do |a| -%>
 
-  belongs_to :<%= a.name.gsub("_id", "") -%><%= ", :class_name => 'Image'" unless a.name =~ /^image(_id)?$/ -%>
+  referenced_in :<%= a.name.gsub("_id", "") -%><%= ", :class_name => 'Image'" unless a.name =~ /^image(_id)?$/ -%>
 <% end -%>
 <% attributes.collect{|a| a if a.type.to_s == 'resource'}.compact.uniq.each do |a| -%>
 
-  belongs_to :<%= a.name.gsub("_id", "") %><%= ", :class_name => 'Resource'" unless a.name =~ /^resource(_id)?$/ -%>
+  referenced_in :<%= a.name.gsub("_id", "") %><%= ", :class_name => 'Resource'" unless a.name =~ /^resource(_id)?$/ -%>
 <% end %>
 end
+
