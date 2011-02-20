@@ -3,7 +3,7 @@ class <%= class_name %>
   include Mongoid::Timestamps
   include Mongoid::Search
 
-  search_in => [:<%= attributes.collect{ |attribute| attribute.name if attribute.type.to_s =~ /string|text/ }.compact.uniq.join(", :") %>]
+  search_in :<%= attributes.collect{ |attribute| attribute.name if attribute.type.to_s =~ /string|text/ }.compact.uniq.join(", :") %>
   <% if (title = attributes.detect { |a| a.type.to_s == "string" }).present? %>
   validates :<%= title.name %>, :presence => true, :uniqueness => true
   <% else %>
