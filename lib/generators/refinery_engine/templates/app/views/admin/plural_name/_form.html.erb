@@ -8,8 +8,8 @@
           :include_object_name => true
         } %>
   <% attributes.each_with_index do |attribute, index| %>
-  <div class='field'>
 <% unless attribute.field_type.to_s == 'text_area' -%>
+  <div class='field'>
     <%%= f.label :<%= attribute.name %> -%>
 <% end -%>
 <% if attribute.type.to_s == 'image' -%>
@@ -26,6 +26,7 @@
           :resource => @<%= singular_name %>.<%= attribute.name.gsub("_id", "") %>,
         } %>
 <% elsif attribute.field_type.to_s == "text_area" and !generated_text_areas -%>
+  <div class='field'>
     <div id='page-tabs' class='clearfix ui-tabs ui-widget ui-widget-content ui-corner-all'>
       <ul id='page_parts'>
         <%% <%= text_areas.map{|t| t.name.to_sym}.inspect -%>.each_with_index do |part, part_index| %>
@@ -44,10 +45,12 @@
       </div>
     </div>
 <% generated_text_areas = true -%>
-<% else -%>
+<% elsif attribute.field_type.to_s != 'text_area' -%>
     <%%= f.<%= attribute.field_type -%> :<%= attribute.name -%><%= ", :class => 'larger widest'" if (index == 0 && attribute.field_type == :text_field) -%> -%>
 <% end -%>
+<% if attribute.field_type.to_s != 'text_area' -%>
   </div>
+<% end -%>
   <% end %>
   <%%= render :partial => "/shared/admin/form_actions",
               :locals => {
