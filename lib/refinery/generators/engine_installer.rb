@@ -1,7 +1,7 @@
 require File.expand_path('../../generators', __FILE__)
 require 'rails/generators'
 require 'rails/generators/named_base'
-require 'rails/generators/migration'
+#require 'rails/generators/migration'
 
 module Refinery
   module Generators
@@ -10,7 +10,7 @@ module Refinery
     # into the rails app db directory, ready to migrate.
     class EngineInstaller < Rails::Generators::Base
 
-      include Rails::Generators::Migration
+      #include Rails::Generators::Migration
 
       attr_accessor :silence_puts
       def silence_puts
@@ -32,9 +32,9 @@ module Refinery
         # taken from http://github.com/rails/rails/blob/master/activerecord/lib/generators/active_record.rb
         # can be removed once this issue is fixed:
         # # https://rails.lighthouseapp.com/projects/8994/tickets/3820-make-railsgeneratorsmigrationnext_migration_number-method-a-class-method-so-it-possible-to-use-it-in-custom-generators
-        def next_migration_number(dirname)
-          ::ActiveRecord::Generators::Base.next_migration_number(dirname)
-        end
+#        def next_migration_number(dirname)
+#          ::ActiveRecord::Generators::Base.next_migration_number(dirname)
+#        end
       end
 
       def generate
@@ -53,17 +53,18 @@ module Refinery
           end
         end
 
-        if !self.silence_puts && self.behavior != :revoke
-          puts "------------------------"
-          puts "Now run:"
-          puts "rake db:migrate"
-          puts "------------------------"
-        elsif self.behavior == :revoke
-          ::Refinery::Generators::Migrations.revoke({
-            :pattern => self.class.source_root.join('db', 'migrate', '*.rb')
-          })
-        end
+#        if !self.silence_puts && self.behavior != :revoke
+#          puts "------------------------"
+#          puts "Now run:"
+#          puts "rake db:migrate"
+#          puts "------------------------"
+#        elsif self.behavior == :revoke
+#          ::Refinery::Generators::Migrations.revoke({
+#            :pattern => self.class.source_root.join('db', 'migrate', '*.rb')
+#          })
+#        end
       end
     end
   end
 end
+
