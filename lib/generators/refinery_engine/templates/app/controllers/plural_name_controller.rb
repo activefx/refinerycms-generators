@@ -24,7 +24,7 @@ protected
   end
 
   def find_page
-    @page = Page.find_by_link_url("/<%= plural_name %>")
+    @page = Page.where(:link_url => "/<%= plural_name %>").first
   end
 
 end
